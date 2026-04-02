@@ -1,0 +1,91 @@
+<resources>
+    <string name="app_name">Eatik</string>
+
+    <string name="logo_app">Logo App</string>
+    <string name="name_developer">Utaa</string>
+    <string name="email_developer">putra@gmail.com</string>
+
+    <!--Bottom Nav-->
+    <string name="home_fragment">Home</string>
+    <string name="profile_fragment">Profile</string>
+    <string name="category_fragment">Category</string>
+    <string name="order_fragment">Order</string>
+
+    <!--Drawer Nav-->
+    <string name="setting_fragment">Settings</string>
+    <string name="help_fragment">Help</string>
+    <string name="about_fragment">About</string>
+
+    <string name="open_drawer">Open navigation drawer</string>
+    <string name="close_drawer">Close navigation drawer</string>
+
+    <!--Auth-->
+    <string name="login_fragment">Login</string>
+    <string name="sign_up_fragment">Sign Up</string>
+
+
+    <!--Food-->
+    <string name="eat_fragment">Makanan</string>
+    <string name="drink_fragment">Minuman</string>
+
+    <!--Home-->
+    <string name="subtitle">Cari makanan favoritmu &amp; \nminuman kesukaanmu 🥤🍜</string>
+    <string name="search_menu">Cari menu...</string>
+    <string name="menu">Menu</string>
+
+    <!--Category-->
+    <string-array name="kategori_array">
+        <item>MAKANAN</item>
+        <item>MINUMAN</item>
+    </string-array>
+
+    <string-array name="status_array">
+        <item>TERSEDIA</item>
+        <item>HABIS</item>
+    </string-array>
+
+    <!--Settings-->
+    <string name="logout">Logout</string>
+    <string name="settings">Pengaturan</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="notification">Notifikasi</string>
+
+    <!--Navigation-->
+    <string name="navigation_drawer_open">Buka menu navigasi</string>
+    <string name="navigation_drawer_close">Tutup menu navigasi</string>
+
+    <!--Add Menu-->
+    <string name="name">Nama</string>
+    <string name="peace">Harga</string>
+    <string name="description">Deskripsi</string>
+    <string name="category">Kategory</string>
+    <string name="status">Status</string>
+    <string name="select_image">Pilih Foto</string>
+    <string name="save">Simpan</string>
+
+    <string name="camera">Kamera</string>
+    <string name="gallery">Galeri</string>
+
+    <!--About-->
+    <string name="about_app">Eatik adalah aplikasi pemesanan makanan dan minuman praktis yang memudahkan pengguna untuk memilih, memesan, dan membayar hanya dengan beberapa ketukan.</string>
+    <string name="developer_app">Developer: Utaa</string>
+    <string name="email_dev">Email Developer</string>
+
+    <!--Help-->
+    <string name="email_to_support">Email ke Support</string>
+    <string name="chat_via_whatsapp">Chat via WhatsApp</string>
+    <string name="subtitle_help">Bantuan &amp; Panduan</string>
+    <string name="short_guide">Panduan Singkat</string>
+    <string name="fill_in_the_guide">1. Login atau daftar akun.\n2. Pilih makanan/minuman.\n3. Tambahkan ke keranjang.\n4. Checkout dan bayar.\n5. Cek history pesanan.</string>
+    <string name="faq">FAQ</string>
+    <string name="frequently_asked_questions">Q: Bagaimana cara mengganti password?\nA: Masuk ke Profile → Settings → Ganti Password.\n\nQ: Apakah bisa batalkan pesanan?\nA: Bisa jika status pesanan belum diproses.</string>
+
+    <!--Item-->
+    <string name="subtitle_item">Nama Menu</string>
+    <string name="peace_item">Rp. 15.000</string>
+    <string name="description_item">Deskripsi makanan yang elegan dan singkat.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>

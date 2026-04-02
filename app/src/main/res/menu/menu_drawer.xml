@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group>
+
+        <item
+            android:id="@+id/settingsFragment"
+            android:title="@string/setting_fragment"
+            android:icon="@drawable/settings"/>
+
+    </group>
+
+    <item android:title="Others">
+
+        <menu>
+
+            <item
+                android:id="@+id/helpFragment"
+                android:title="@string/help_fragment"
+                android:icon="@drawable/help"/>
+
+            <item
+                android:id="@+id/aboutFragment"
+                android:title="@string/about_fragment"
+                android:icon="@drawable/about"/>
+
+        </menu>
+
+    </item>
+</menu>
