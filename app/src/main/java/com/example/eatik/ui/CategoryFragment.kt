@@ -1,10 +1,11 @@
-package com.example.eatik.data.ui
+package com.example.eatik.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.eatik.adapter.TabAdapter
 import com.example.eatik.databinding.FragmentCategoryBinding
 import com.google.android.material.tabs.TabLayoutMediator
 

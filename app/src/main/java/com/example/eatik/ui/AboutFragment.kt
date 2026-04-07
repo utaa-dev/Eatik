@@ -1,4 +1,4 @@
-package com.example.eatik.data.ui
+package com.example.eatik.ui
 
 import android.content.Intent
 import android.net.Uri
@@ -29,7 +29,6 @@ class AboutFragment : Fragment() {
                 }
                 startActivity(Intent.createChooser(intent, "Pilih aplikasi email"))
             } catch (e: Exception) {
-                // kalau gak ada email app, kasih toast biar user tahu
                 Toast.makeText(requireContext(), "Tidak ada aplikasi email terpasang", Toast.LENGTH_SHORT).show()
             }
         }

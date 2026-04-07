@@ -1,4 +1,4 @@
-package com.example.eatik.data.ui
+package com.example.eatik.ui
 
 import android.Manifest
 import android.content.pm.PackageManager

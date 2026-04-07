@@ -1,4 +1,4 @@
-package com.example.eatik.data.ui
+package com.example.eatik.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

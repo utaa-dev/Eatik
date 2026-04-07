@@ -1,4 +1,4 @@
-package com.example.eatik.data.response
+package com.example.eatik.data.remote.response
 
 import com.google.gson.annotations.SerializedName
 
@@ -14,7 +14,7 @@ data class ResponseItem(
 	val nama: String,
 
 	@field:SerializedName("harga")
-	val harga: Double,
+	val harga: Int,
 
 	@field:SerializedName("foto")
 	val foto: String,

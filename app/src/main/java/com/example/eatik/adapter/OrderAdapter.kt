@@ -1,4 +1,4 @@
-package com.example.eatik.data.ui
+package com.example.eatik.adapter
 
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.eatik.R
+import com.example.eatik.ui.OrderItem
 
 class OrderAdapter(private var orderList: List<OrderItem>) :
     RecyclerView.Adapter<OrderAdapter.OrderViewHolder>() {

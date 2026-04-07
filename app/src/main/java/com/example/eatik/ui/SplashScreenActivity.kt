@@ -1,4 +1,4 @@
-package com.example.eatik.data.ui
+package com.example.eatik.ui
 
 import android.animation.Animator
 import android.content.Intent

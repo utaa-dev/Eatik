@@ -1,4 +1,4 @@
-package com.example.eatik.data.ui
+package com.example.eatik.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.eatik.R
+import com.example.eatik.adapter.OrderAdapter
 import com.example.eatik.databinding.FragmentOrderBinding
 
 class OrderFragment : Fragment() {

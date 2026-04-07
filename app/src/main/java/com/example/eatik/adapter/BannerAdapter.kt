@@ -1,4 +1,4 @@
-package com.example.eatik.data.ui
+package com.example.eatik.adapter
 
 import android.view.ViewGroup
 import android.widget.ImageView

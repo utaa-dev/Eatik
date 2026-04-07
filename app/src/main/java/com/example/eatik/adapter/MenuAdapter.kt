@@ -1,4 +1,4 @@
-package com.example.eatik.data.ui
+package com.example.eatik.adapter
 
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -8,21 +8,21 @@ import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.eatik.R
-import com.example.eatik.data.response.ResponseItem
+import com.example.eatik.data.local.entity.FoodEntity
 import com.example.eatik.databinding.ItemMenuBinding
 
 class MenuAdapter(
     private val onDeleteClickListener: OnDeleteClickListener,
-    private val onItemClick: ((ResponseItem) -> Unit)? = null // jadi opsional
+    private val onItemClick: ((FoodEntity) -> Unit)? = null
 ) : RecyclerView.Adapter<MenuAdapter.MenuViewHolder>() {
 
     interface OnDeleteClickListener {
-        fun onDeleteClick(menu: ResponseItem)
+        fun onDeleteClick(menu: FoodEntity)
     }
 
-    private var menuList: List<ResponseItem> = listOf()
+    private var menuList: List<FoodEntity> = listOf()
 
-    fun submitList(newList: List<ResponseItem>) {
+    fun submitList(newList: List<FoodEntity>) {
         menuList = newList
         notifyDataSetChanged()
     }
@@ -38,7 +38,6 @@ class MenuAdapter(
     override fun getItemCount(): Int = menuList.size
 
     override fun onBindViewHolder(holder: MenuViewHolder, position: Int) {
-
         val menu = menuList[position]
 
         holder.binding.tvName.text = menu.nama
@@ -46,6 +45,7 @@ class MenuAdapter(
         holder.binding.tvDesc.text = menu.deskripsi
         holder.binding.tvCategory.text = menu.kategori
 
+        // Logika Status
         if (menu.status.equals("TERSEDIA", ignoreCase = true)) {
             holder.binding.tvStatusBadge.text = "Tersedia"
             holder.binding.tvStatusBadge.setBackgroundResource(R.drawable.bg_status_available)
@@ -54,10 +54,13 @@ class MenuAdapter(
             holder.binding.tvStatusBadge.setBackgroundResource(R.drawable.bg_status_unavailable)
         }
 
+        // Gambar
         Glide.with(holder.itemView.context)
             .load("http://192.168.0.238:8080/uploads/${menu.foto}")
+            .placeholder(R.drawable.ic_launcher_background) // Tambahkan placeholder jika ada
             .into(holder.binding.ivFood)
 
+        // Animasi
         setAnimation(holder.itemView)
 
         holder.itemView.setOnTouchListener { view, event ->
@@ -73,19 +76,17 @@ class MenuAdapter(
             false
         }
 
-        // KLIK ITEM → hanya kalau onItemClick tidak null
         holder.itemView.setOnClickListener {
             onItemClick?.invoke(menu)
         }
 
-        // DELETE
         holder.binding.btnMinus.setOnClickListener {
             onDeleteClickListener.onDeleteClick(menu)
         }
     }
 
     private fun setAnimation(view: View) {
-        view.setAnimation(
+        view.startAnimation(
             AnimationUtils.loadAnimation(view.context, R.anim.item_animation)
         )
     }

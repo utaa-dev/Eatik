@@ -1,4 +1,4 @@
-package com.example.eatik.data.ui
+package com.example.eatik.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,17 +8,22 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.eatik.data.logic.MainViewModel
-import com.example.eatik.data.response.ResponseItem
-import com.example.eatik.data.ui.MenuAdapter
+import com.example.eatik.adapter.MenuAdapter
+import com.example.eatik.data.local.entity.FoodEntity
 import com.example.eatik.databinding.FragmentMakananBinding
+import com.example.eatik.viewmodel.FoodViewModel
+import com.example.eatik.viewmodel.ViewModelFactory
 
 class MakananFragment : Fragment() {
 
     private var _binding: FragmentMakananBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: MenuAdapter
-    private val viewModel: MainViewModel by activityViewModels()
+
+    // Gunakan factory agar ViewModel terinisialisasi dengan benar
+    private val viewModel: FoodViewModel by activityViewModels {
+        ViewModelFactory.getInstance(requireContext())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,18 +38,18 @@ class MakananFragment : Fragment() {
 
         setupRecyclerView()
         observeMenu()
-        viewModel.loadMenuIfNeeded()
     }
 
     private fun setupRecyclerView() {
         adapter = MenuAdapter(
             object : MenuAdapter.OnDeleteClickListener {
-                override fun onDeleteClick(menu: ResponseItem) {
+
+                override fun onDeleteClick(menu: FoodEntity) {
                     AlertDialog.Builder(requireContext())
                         .setTitle("Hapus Menu")
                         .setMessage("Yakin mau hapus ${menu.nama}?")
                         .setPositiveButton("Hapus") { _, _ ->
-                            viewModel.deleteMenu(menu.id)
+                            viewModel.deleteMenu(id)
                         }
                         .setNegativeButton("Batal", null)
                         .show()
@@ -57,8 +62,20 @@ class MakananFragment : Fragment() {
     }
 
     private fun observeMenu() {
-        viewModel.menu.observe(viewLifecycleOwner) { list ->
-            adapter.submitList(list.filter { it.kategori.uppercase() == "MAKANAN" })
+
+        viewModel.foods.observe(viewLifecycleOwner) { result ->
+
+            when (result) {
+                is com.example.eatik.data.Result.Success -> {
+                    val list = result.data
+                    if (list != null) {
+
+                        val filteredList = list.filter { it.kategori.uppercase() == "MAKANAN" }
+                        adapter.submitList(filteredList)
+                    }
+                }
+                else -> { /* Handle Loading atau Error jika perlu */ }
+            }
         }
     }
 

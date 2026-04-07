@@ -1,4 +1,4 @@
-package com.example.eatik.data.ui
+package com.example.eatik.ui
 
 import android.net.Uri
 import android.os.Bundle
@@ -10,16 +10,20 @@ import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.observe
 import com.example.eatik.R
-import com.example.eatik.data.logic.MainViewModel
 import com.example.eatik.databinding.BottomAddMenuBinding
+import com.example.eatik.viewmodel.FoodViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class AddMenuBottomSheet : BottomSheetDialogFragment() {
 
     private var _binding: BottomAddMenuBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: MainViewModel by activityViewModels()
+
+    private val viewModel: FoodViewModel by activityViewModels<FoodViewModel>()
+
+
     private var selectedImageUri: Uri? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -30,7 +34,12 @@ class AddMenuBottomSheet : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Setup spinner kategori & status
+        setupSpinners()
+        setupImagePicker()
+        setupSaveButton()
+    }
+
+    private fun setupSpinners() {
         val kategoriAdapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_item,
@@ -46,16 +55,17 @@ class AddMenuBottomSheet : BottomSheetDialogFragment() {
         )
         statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerStatus.adapter = statusAdapter
+    }
 
-        // Pilih gambar
+    private fun setupImagePicker() {
         binding.selectImage.setOnClickListener {
             BottomSelectImage { uri ->
                 selectedImageUri = uri
                 binding.imgPreview.setImageURI(uri)
+                binding.imgPreview.visibility = View.VISIBLE // Pastikan preview muncul
             }.show(parentFragmentManager, "SelectImage")
         }
 
-        // Animasi touch
         binding.selectImage.setOnTouchListener { v, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> v.startAnimation(AnimationUtils.loadAnimation(v.context, R.anim.scale_in))
@@ -63,54 +73,52 @@ class AddMenuBottomSheet : BottomSheetDialogFragment() {
             }
             false
         }
+    }
 
-        // Tombol simpan
+    private fun setupSaveButton() {
         binding.btnSave.setOnClickListener {
             val nama = binding.etNama.text.toString().trim()
             val hargaText = binding.etHarga.text.toString().trim()
             val deskripsi = binding.etDeskripsi.text.toString().trim()
             val kategori = binding.spinnerKategori.selectedItem.toString()
             val status = binding.spinnerStatus.selectedItem.toString()
+            val foto = selectedImageUri
 
-            if (nama.isEmpty() || hargaText.isEmpty()) {
-                Toast.makeText(requireContext(), "Nama dan harga wajib diisi", Toast.LENGTH_SHORT).show()
+            // 1. Validasi Input
+            if (nama.isEmpty() || hargaText.isEmpty() || foto == null || deskripsi.isEmpty()) {
+                Toast.makeText(requireContext(), "Semua data wajib diisi", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            if (selectedImageUri == null) {
-                Toast.makeText(requireContext(), "Pilih foto dulu", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+            val harga = hargaText.toDoubleOrNull() ?: 0.0
 
-            val harga = hargaText.toDoubleOrNull()
-            if (harga == null) {
-                Toast.makeText(requireContext(), "Harga tidak valid", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
+            // 2. Loading State
             binding.btnSave.isEnabled = false
             binding.btnSave.text = "Menyimpan..."
 
-            // observer sekali pakai
-            val observer = object : androidx.lifecycle.Observer<Boolean> {
-                override fun onChanged(success: Boolean) {
-                    if (success) {
-                        Toast.makeText(requireContext(), "Menu berhasil ditambahkan", Toast.LENGTH_SHORT).show()
-                        dismiss()
-                    } else {
-                        Toast.makeText(requireContext(), "Gagal upload menu", Toast.LENGTH_SHORT).show()
-                        binding.btnSave.isEnabled = true
-                        binding.btnSave.text = "Tambah Menu"
-                    }
-                    viewModel.uploadStatus.removeObserver(this)
+            // 3. Observer untuk memantau hasil upload
+            viewModel.addMenu(nama, harga, kategori, deskripsi, status, foto, requireContext())
+                .observe(viewLifecycleOwner) { result ->
+                if (result != null) {
+                    Toast.makeText(requireContext(), "Menu berhasil ditambahkan", Toast.LENGTH_SHORT).show()
+                    dismiss() // Tutup BottomSheet jika berhasil
+                } else {
+                    Toast.makeText(requireContext(), "Gagal menambahkan menu", Toast.LENGTH_SHORT).show()
+                    binding.btnSave.isEnabled = true
+                    binding.btnSave.text = "Simpan"
                 }
             }
-            viewModel.uploadStatus.observe(viewLifecycleOwner, observer)
 
-            // kirim ke ViewModel
-            selectedImageUri?.let { uri ->
-                viewModel.addMenu(nama, harga, kategori, deskripsi, status, uri, requireContext())
-            }
+            // 4. Kirim data ke ViewModel
+            viewModel.addMenu(
+                nama,
+                harga,
+                kategori,
+                deskripsi,
+                status,
+                foto,
+                requireContext()
+            )
         }
     }
 

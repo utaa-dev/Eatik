@@ -1,4 +1,4 @@
-package com.example.eatik.data.retrofit
+package com.example.eatik.data.remote.retrofit
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

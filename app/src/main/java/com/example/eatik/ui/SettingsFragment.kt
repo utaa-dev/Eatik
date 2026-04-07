@@ -1,6 +1,5 @@
-package com.example.eatik.data.ui
+package com.example.eatik.ui
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Switch
