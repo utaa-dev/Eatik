@@ -108,17 +108,6 @@ class AddMenuBottomSheet : BottomSheetDialogFragment() {
                     binding.btnSave.text = "Simpan"
                 }
             }
-
-            // 4. Kirim data ke ViewModel
-            viewModel.addMenu(
-                nama,
-                harga,
-                kategori,
-                deskripsi,
-                status,
-                foto,
-                requireContext()
-            )
         }
     }
 

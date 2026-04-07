@@ -31,7 +31,7 @@ class FoodRepository(
                 FoodEntity(
                     id = it.id ?: 0,
                     nama = it.nama ?: "",
-                    harga = it.harga?.toDouble() ?: 0.0, // Sesuai Entity kamu (Double)
+                    harga = it.harga?.toDouble() ?: 0.0, // Sesuai Entity (Double)
                     foto = it.foto ?: "",
                     deskripsi = it.deskripsi ?: "",
                     kategori = it.kategori ?: "",
@@ -71,8 +71,30 @@ class FoodRepository(
             val deskripsiBody = deskripsi.toRequestBody("text/plain".toMediaTypeOrNull())
             val statusBody = status.toRequestBody("text/plain".toMediaTypeOrNull())
 
+            // 1. Upload ke API
             apiService.addMenu(imagePart, namaBody, hargaBody, kategoriBody, deskripsiBody, statusBody)
+
+            // 2. Ambil ulang data terbaru dari API
+            val response = apiService.getFoods()
+
+            val data = response.map {
+                FoodEntity(
+                    id = it.id ?: 0,
+                    nama = it.nama ?: "",
+                    harga = it.harga?.toDouble() ?: 0.0,
+                    foto = it.foto ?: "",
+                    deskripsi = it.deskripsi ?: "",
+                    kategori = it.kategori ?: "",
+                    status = it.status ?: ""
+                )
+            }
+
+            // 3. Update database lokal
+            foodDao.deleteMenu()
+            foodDao.insertFoods(data)
+
             emit(Result.Success("Menu berhasil ditambahkan"))
+
         } catch (e: Exception) {
             emit(Result.Error(e.message ?: "Gagal menambah menu"))
         }
